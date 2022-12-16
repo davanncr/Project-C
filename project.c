@@ -165,30 +165,31 @@ void upload_to_file(LIST *list){
 
 }
 
-// void delete_employee(){
-//     LIST *list =create_list();
-//     int id;
-//     printf("Enter(ID):");
-//     scanf("%d",&id);
-//     FILE *f=fopen("List.csv","r");
-//     DATA data;
-//     while (fread(&data,sizeof(DATA),1,f))
-//     {
-//         insert_end(list,data);
-//     }
-//     fclose(f);
-//     system("del List.csv");
-//     _sleep(100);
-//     FILE *file=fopen("List.csv","a");
-//     FILE *fdl=fopen("ListDeleted.csv","a");
-//     while (list->head != NULL)
-//     {
-//         if(list->head->data.id == id){
-//            fwrite(&list->head->data,sizeof(DATA),1,fdl);
-//         }
-//         fwrite(&list->head->data,sizeof(DATA),1,file);
-//         list->head=list->head->next;
-//     }
-//     fclose(file);
-//     fclose(fdl);
-// }
+void delete_employee(){
+    LIST *list =create_list();
+    int id;
+    printf("Enter(ID):");
+    scanf("%d",&id);
+    FILE *f=fopen("List.csv","r");
+    DATA data;
+    while (fread(&data,sizeof(DATA),1,f))
+    {
+        insert_end(list,data);
+    }
+    fclose(f);
+    FILE *fileW=fopen("List.csv","w");
+    FILE *fileA=fopen("List.csv","a");
+    FILE *fdl=fopen("ListDeleted.csv","a");
+    while (list->head != NULL)
+    {
+        if(list->head->data.id == id){
+           fwrite(&list->head->data,sizeof(DATA),1,fdl);
+        }else{
+            fwrite(&list->head->data,sizeof(DATA),1,fileA);
+        }
+        list->head=list->head->next;  
+    }
+    fclose(fileW);
+    fclose(fileA);
+    fclose(fdl);
+}
