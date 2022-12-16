@@ -73,6 +73,12 @@ void insert_end(LIST *list,DATA data){
     list->n += 1;
     }
 }
+LIST* maxID(LIST *list){
+    
+    int n=list->n;
+    int arr[n];
+
+}
 void add(LIST *list);
 void upload_to_file(LIST *list);
 void print_list(){
@@ -82,6 +88,7 @@ void print_list(){
     // if(file==NULL){
     // printf("Empty list\n");
     // }
+    
     while(fread(&tmp,sizeof(DATA),1,file)!=NULL){
         printf("%d %d %s %s %s %s %s %.3f\n",tmp.id,tmp.age,tmp.name,tmp.gender,tmp.phone,tmp.gmail,tmp.position,tmp.salary);
     }
