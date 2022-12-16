@@ -78,13 +78,16 @@ void upload_to_file(LIST *list);
 void print_list(){
     FILE* file=fopen("sample.csv","r");
     DATA tmp;
-    printf("Empty list\n");
+
+    // if(file==NULL){
+    // printf("Empty list\n");
+    // }
     while(fread(&tmp,sizeof(DATA),1,file)!=NULL){
         printf("%d %d %s %s %s %s %s %.3f\n",tmp.id,tmp.age,tmp.name,tmp.gender,tmp.phone,tmp.gmail,tmp.position,tmp.salary);
     }
 }
 int main(){
-    LIST * list = create_list();
+    LIST * list;
     menu(list);
     return 0;
 }  
@@ -123,6 +126,7 @@ void menu(LIST *list){
 *   ? Add Employees
 */
 void add(LIST *list){
+    list=create_list();
     int id,age,n;
     char name[20],gender[10],phone[20],gmail[25],position[20];
     float salary;
@@ -148,15 +152,12 @@ void add(LIST *list){
 * ? upload linked list to file
  */
 void upload_to_file(LIST *list){
-    //printf("%d - %d - %s - %s - %s - %s - %s -%0.2f",list->head->data.id,list->head->data.age,list->head->data.name,list->head->data.gender,list->head->data.phone,list->head->data.gmail,list->head->data.position,list->head->data.salary);
-    //print_list(list);
-    // printf("Successfully uploaded");
+
     FILE *f;
-    NODE *tmp = list->head;
     f = fopen("sample.csv", "a+");
     for(i=0;i<list->n;i++){
-        fwrite(&tmp->data,sizeof(DATA),1,f);
-        tmp = tmp->next;
+        fwrite(&list->head->data,sizeof(DATA),1,f);
+        list->head = list->head->next;
     }
     fclose(f);
 
