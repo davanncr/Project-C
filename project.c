@@ -76,7 +76,7 @@ void insert_end(LIST *list,DATA data){
 void add(LIST *list);
 void upload_to_file(LIST *list);
 void print_list(){
-    FILE* file=fopen("sample.csv","r");
+    FILE* file=fopen("List.csv","r");
     DATA tmp;
 
     // if(file==NULL){
@@ -101,6 +101,7 @@ void menu(LIST *list){
         system("cls");
         printf("[1]. Add Employee\n");
         printf("[2]. List of All Employees\n");
+        printf("[3]. Delete Employee\n");
         printf("Choose one option : ");scanf("%d",&op);
         switch(op){
             case 1:{
@@ -112,7 +113,8 @@ void menu(LIST *list){
                 break;
             }
             case 3:{
-                
+                delete_employee();
+                break;
             }
             case 5:{
                 exit(0);
@@ -154,7 +156,7 @@ void add(LIST *list){
 void upload_to_file(LIST *list){
 
     FILE *f;
-    f = fopen("sample.csv", "a+");
+    f = fopen("List.csv", "a");
     for(i=0;i<list->n;i++){
         fwrite(&list->head->data,sizeof(DATA),1,f);
         list->head = list->head->next;
@@ -163,3 +165,30 @@ void upload_to_file(LIST *list){
 
 }
 
+// void delete_employee(){
+//     LIST *list =create_list();
+//     int id;
+//     printf("Enter(ID):");
+//     scanf("%d",&id);
+//     FILE *f=fopen("List.csv","r");
+//     DATA data;
+//     while (fread(&data,sizeof(DATA),1,f))
+//     {
+//         insert_end(list,data);
+//     }
+//     fclose(f);
+//     system("del List.csv");
+//     _sleep(100);
+//     FILE *file=fopen("List.csv","a");
+//     FILE *fdl=fopen("ListDeleted.csv","a");
+//     while (list->head != NULL)
+//     {
+//         if(list->head->data.id == id){
+//            fwrite(&list->head->data,sizeof(DATA),1,fdl);
+//         }
+//         fwrite(&list->head->data,sizeof(DATA),1,file);
+//         list->head=list->head->next;
+//     }
+//     fclose(file);
+//     fclose(fdl);
+// }
