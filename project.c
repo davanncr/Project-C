@@ -73,25 +73,40 @@ void insert_end(LIST *list,DATA data){
     list->n += 1;
     }
 }
-LIST* maxID(LIST *list){
-    
+void sortList(LIST *list){
     int n=list->n;
-    int arr[n];
-
+    DATA arr[n];
+    int i=0;
+    while (list->head!=NULL)
+    {
+        arr[i]=list->head->data;
+        i++;
+        list->head=list->head->next;
+    }
+    for(int i=0;i<n;i++){
+        for(int j=0;j<n-1;j++){
+            if(arr[j].id>arr[j+1].id){
+                DATA swap=arr[j];
+                arr[j]=arr[j+1];
+                arr[j+1]=swap;
+            }
+        }
+    }
+    for(int i=0;i<n;i++){
+        printf("%d %d %s %s %s %s %s %.3f\n",arr[i].id,arr[i].age,arr[i].name,arr[i].gender,arr[i].phone,arr[i].gmail,arr[i].position,arr[i].salary);
+    }
 }
 void add(LIST *list);
 void upload_to_file(LIST *list);
 void print_list(){
+    LIST *list=create_list();
     FILE* file=fopen("List.csv","r");
     DATA tmp;
-
-    // if(file==NULL){
-    // printf("Empty list\n");
-    // }
-    
     while(fread(&tmp,sizeof(DATA),1,file)!=NULL){
-        printf("%d %d %s %s %s %s %s %.3f\n",tmp.id,tmp.age,tmp.name,tmp.gender,tmp.phone,tmp.gmail,tmp.position,tmp.salary);
+        insert_end(list,tmp);
     }
+    fclose(file);
+    sortList(list);
 }
 int main(){
     LIST * list;
@@ -109,6 +124,7 @@ void menu(LIST *list){
         printf("[1]. Add Employee\n");
         printf("[2]. List of All Employees\n");
         printf("[3]. Delete Employee\n");
+        printf("[4]. Show Deleted Employee\n");
         printf("Choose one option : ");scanf("%d",&op);
         switch(op){
             case 1:{
@@ -121,6 +137,10 @@ void menu(LIST *list){
             }
             case 3:{
                 delete_employee();
+                break;
+            }
+            case 4:{
+                ListDeleted();
                 break;
             }
             case 5:{
@@ -199,4 +219,14 @@ void delete_employee(){
     fclose(fileW);
     fclose(fileA);
     fclose(fdl);
+}
+void ListDeleted(){
+    LIST *list=create_list();
+    FILE *file=fopen("ListDeleted.csv","r");
+    DATA tmp;
+    while(fread(&tmp,sizeof(DATA),1,file)!=NULL){
+        insert_end(list,tmp);
+    }
+    fclose(file);
+    sortList(list);
 }
