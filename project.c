@@ -121,10 +121,13 @@ void menu(LIST *list){
     int op;
     do{
         system("cls");
+        printf("[0]. Exit\n");
         printf("[1]. Add Employee\n");
         printf("[2]. List of All Employees\n");
         printf("[3]. Delete Employee\n");
         printf("[4]. Show Deleted Employee\n");
+        printf("[5]. Update Employee\n");
+        printf("[6]. Search Employee\n");
         printf("Choose one option : ");scanf("%d",&op);
         switch(op){
             case 1:{
@@ -142,8 +145,15 @@ void menu(LIST *list){
             case 4:{
                 ListDeleted();
                 break;
+            }case 5:{
+                update();
+                break;
             }
-            case 5:{
+            case 6:{
+                search();
+                break;
+            }
+            case 0:{
                 exit(0);
             }
         }
@@ -229,4 +239,151 @@ void ListDeleted(){
     }
     fclose(file);
     sortList(list);
+}
+
+
+// update information of employee that specifiec on each atributes
+DATA update_unique(DATA tmp){
+    int op;
+    system("cls");
+    printf("[1]. Update ID \n");
+    printf("[2]. Update Age \n");
+    printf("[3]. Update Name\n");
+    printf("[4]. Update Gender \n");
+    printf("[5]. Update Phone \n");
+    printf("[6]. Update Email \n");
+    printf("[7]. Update Position \n");
+    printf("[8]. Update Salary \n");
+    printf("[9]. Update All \n");
+    printf("[10]. Already Updated \n");
+    printf("Choose Option You want to update : ");
+    scanf("%d", &op);
+    do
+    {
+        switch (op)
+        {
+        case 1:{
+            printf("Enter New ID : ");
+            scanf("%d", &tmp.id);
+            goto Exit;
+            break;
+        }
+        case 2:{
+            printf("Enter New Age : ");
+            scanf("%d", &tmp.age);
+            goto Exit;
+            break;
+        }
+        case 3:{
+            fflush(stdin);
+            printf("Enter New Name : ");
+            gets(tmp.name);
+            goto Exit;
+            break;
+        }
+        case 4:{
+            printf("Enter New Gender : ");
+            gets(tmp.gender);
+            goto Exit;
+            break;
+        }
+        case 5:{
+            printf("Enter New Phone : ");
+            gets(tmp.phone);
+            goto Exit;
+            break;
+        }
+        case 6:{
+            printf("Enter New Email : ");
+            gets(tmp.gmail);
+            goto Exit;
+            break;
+        }
+        case 7:{
+            printf("Enter New Position : ");
+            gets(tmp.position);
+            goto Exit;
+            break;
+        }
+        case 8:{
+            printf("Enter New Salary : ");
+            scanf("%f", &tmp.salary);
+            goto Exit;
+            break;
+        }
+        case 9:{
+            printf("Enter New ID : ");
+            scanf("%d", &tmp.id);
+            printf("Enter New Age : ");
+            scanf("%d", &tmp.age);
+            fflush(stdin);
+            printf("Enter New Name : ");
+            gets(tmp.name);
+            printf("Enter New Gender : ");
+            gets(tmp.gender);
+            printf("Enter New Phone : ");
+            gets(tmp.phone);
+            printf("Enter New Email : ");
+            gets(tmp.gmail);
+            printf("Enter New Position : ");
+            gets(tmp.position);
+            printf("Enter New Salary : ");
+            scanf("%f", &tmp.salary);
+            printf("Already Updated\n ");
+            goto Exit;
+            break;
+        }
+        case 10:{
+            goto Exit;
+        }
+        }
+
+        printf("Press Enter to update other Information...\n");
+    } while (getch() == 13);
+    Exit:
+    return tmp;
+}
+void search()
+{
+    FILE *file = fopen("List.csv", "r");
+    DATA tmp;
+    int id_search;
+    printf("Enter ID to search for Employee : ");
+    scanf("%d", &id_search);
+    while (fread(&tmp, sizeof(DATA), 1, file) != NULL)
+    {
+        if (id_search == tmp.id)
+        {
+            printf("%d %d %s %s %s %s %s %.3f $\n", tmp.id, tmp.age, tmp.name, tmp.gender, tmp.phone, tmp.gmail, tmp.position, tmp.salary);
+        }
+    }
+    fclose(file);
+}
+void update()
+{
+    FILE *file = fopen("List.csv", "r");
+    FILE *f = fopen("temp.csv", "a+");
+    DATA tmp, tmp1;
+    int id_update;
+    if (!file && !f)
+    {
+        printf("Unable to open this file ...\n");
+        return 0;
+    }
+    printf("Enter the ID of the Employee for Update : ");
+    scanf("%d", &id_update);
+    while (fread(&tmp, sizeof(DATA), 1, file) != NULL)
+    {
+        if (id_update == tmp.id){
+            tmp1 = update_unique(tmp);
+            fwrite(&tmp1, sizeof(DATA), 1, f);
+        }
+        else{
+            fwrite(&tmp, sizeof(DATA), 1, f);
+        }
+    }
+    fclose(file);
+    fclose(f);
+    remove("List.csv");
+    rename("temp.csv","List.csv");
 }
